@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import pickle
+import csv
 
 
 def get_stars_count(review_soup):
@@ -13,7 +14,7 @@ def get_stars_count(review_soup):
 def get_review_metadata(review_soup):
     metadata = review_soup.find("div", class_="MyEned")
     if not metadata:
-        return ""
+        return {"id": "", "lang": ""}
     return {"id": metadata.get("id"), "lang": metadata.get("lang")}
 
 
@@ -22,6 +23,10 @@ def get_review_text(review_soup):
     if not elem:
         return ""
     return elem.find("span", class_="wiI7pd").text
+
+
+def get_review_date(review_soup):
+    return review_soup.find("span", class_="rsqaWe").text
 
 
 def process_reviews(reviews: list) -> list:
@@ -34,8 +39,15 @@ def process_reviews(reviews: list) -> list:
         star_count = get_stars_count(review_soup)
         metadata = get_review_metadata(review_soup)
         text = get_review_text(review_soup)
+        time_ago = get_review_date(review_soup)
         processed_reviews.append(
-            {"stars": star_count, "metadata": metadata, "text": text}
+            {
+                "stars": star_count,
+                "id": metadata.get("id"),
+                "lang": metadata.get("lang"),
+                "text": text,
+                "time_ago": time_ago,
+            }
         )
 
     return processed_reviews
@@ -46,4 +58,8 @@ if __name__ == "__main__":
         reviews = pickle.load(f)
 
     processed_reviews = process_reviews(reviews)
-    breakpoint()
+
+    with open("data/processed_reviews.csv", "w") as f:
+        writer = csv.DictWriter(f, fieldnames=list(processed_reviews[0].keys()))
+        writer.writeheader()
+        writer.writerows(processed_reviews)
