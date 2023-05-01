@@ -14,10 +14,15 @@ PALETTE = [
     "rgb(206,212,218)",
 ]
 
-st.title("Alan Google Maps reviews analysis dashboad")
+st.set_page_config(
+    page_title="Alan Reviews",
+    page_icon="assets/alan.png",
+)
+
+st.title("Alan Google Maps reviews analysis")
 st.markdown(
     """
-    Review statistics about the reviews left on Alan on google maps and explore the main topics users talk about
+    Analysis of reviews scrapped on Alan's google maps business page 🔍
     """
 )
 
@@ -35,19 +40,14 @@ response = requests.get(
 reviews = pd.DataFrame(response.get("reviews"))
 
 ### BASIC STATISTICS ###
-st.markdown(
-    """
-    ### Reviews and ratings overview 📊
-    """
-)
 
 # compute statistics
 n_reviews = len(reviews.text)
 avg_rating = round(reviews.stars.mean(), 2)
 
 review_col, rating_col = st.columns(2)
-review_col.metric("Number of reviews", n_reviews)
-rating_col.metric("Average rating", avg_rating)
+review_col.metric("Number of reviews over time period", n_reviews)
+rating_col.metric("Average rating over time period", avg_rating)
 
 # compute statistics by month
 reviews["date"] = pd.to_datetime(reviews["date"])
@@ -87,7 +87,7 @@ st.plotly_chart(fig1)
 st.markdown(
     """
     ### Strength and weaknesses 🚀
-    Reviews are split into 2 groups : 1-2 star ratings (😢) and 4-5 star ratings (💪🏻).
+    Reviews are split into 2 groups : 1-2 star ratings (😢) and 4-5 star ratings (💪🏻). \n
     The most representative topics are then extracted from each group.
     """
 )
@@ -108,6 +108,7 @@ st.markdown(
     """
     ### Review clustering 👀
     Reviews are organised in clusters using their content. Reviews in gray are outliers.
+    You can hover over the dots to read the review.
     The main topics of each cluster are shown below.
     """
 )
