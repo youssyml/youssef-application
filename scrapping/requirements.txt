@@ -1,6 +1,4 @@
+#Scrapping
 selenium
 chromedriver-binary
 beautifulsoup4
-pandas
-matplotlib
-seaborn

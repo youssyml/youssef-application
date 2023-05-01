@@ -1,0 +1,13 @@
+#Analysis
+pandas
+matplotlib
+seaborn
+
+#NLP
+scikit-learn
+spacy
+sentencepiece
+
+#API
+fastapi
+uvircorn
