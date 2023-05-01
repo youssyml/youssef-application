@@ -24,7 +24,9 @@ class NLP:
         self.preprocess_text()
 
     def preprocess_text(self) -> None:
-        self.documents = self.reviews_df.loc[
+        self.documents = self.reviews_df.copy()
+
+        self.documents = self.documents.loc[
             self.reviews_df.lang == "fr", ["text", "stars", "date"]
         ]
 
@@ -85,9 +87,12 @@ class NLP:
         embeddings = model.encode(docs_df.processed_text.to_list())
 
         # reduce dimensions
-        reducer = umap.UMAP(n_neighbors=15, n_components=10, metric="cosine").fit(
-            embeddings
-        )
+        reducer = umap.UMAP(
+            n_neighbors=15,
+            n_components=10,
+            metric="cosine",
+            random_state=42,
+        ).fit(embeddings)
         reduced = reducer.transform(embeddings)
 
         # make clusters
@@ -106,15 +111,13 @@ class NLP:
 
         # compute the x,y coordinates of the reviews
         reducer_plotting = umap.UMAP(
-            n_neighbors=15, n_components=2, metric="cosine"
+            n_neighbors=15, n_components=2, metric="cosine", random_state=42
         ).fit(embeddings)
         doc_coord = reducer_plotting.transform(embeddings)
         docs_df["x"] = doc_coord[:, 0]
         docs_df["y"] = doc_coord[:, 1]
 
         return {
-            "clusters": extract_top_n_words_per_topic(
-                tf_idf, count, docs_by_cluster, n=5
-            ),
+            "clusters": extract_top_n_words_per_topic(tf_idf, count, docs_by_cluster),
             "reviews": docs_df[["text", "cluster", "x", "y"]].to_dict("records"),
         }

@@ -59,7 +59,7 @@ def c_tf_idf(documents, m, ngram_range=(1, 1), min_df=0.05, max_df=0.95):
     return np.multiply(c_tf, idf), vectorizer
 
 
-def extract_top_n_words_per_topic(tf_idf, count, docs_by_cluster, n=5):
+def extract_top_n_words_per_topic(tf_idf, count, docs_by_cluster, n=3):
     words = pd.DataFrame(
         tf_idf,
         index=count.get_feature_names_out(),

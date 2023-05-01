@@ -1,7 +1,5 @@
 #Analysis
 pandas
-matplotlib
-seaborn
 
 #NLP
 scikit-learn

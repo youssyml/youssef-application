@@ -16,8 +16,6 @@ async def get_reviews(start: str, end: str):
     end = datetime.strptime(end, "%Y-%m-%d")
 
     response = app.state.model.get_reviews(start, end)
-    print(response)
-
     return {"reviews": app.state.model.get_reviews(start, end)}
 
 
