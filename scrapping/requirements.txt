@@ -1,4 +1,4 @@
 #Scrapping
 selenium
-chromedriver-binary
+webdriver-manager
 beautifulsoup4

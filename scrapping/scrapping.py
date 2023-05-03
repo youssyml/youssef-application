@@ -11,7 +11,7 @@ import pickle
 
 ##### all selenium related imports #####
 from selenium import webdriver
-import chromedriver_binary
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -21,7 +21,9 @@ from selenium.webdriver.common.keys import Keys
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
 
-driver = webdriver.Chrome(chrome_options=chrome_options)
+driver = webdriver.Chrome(
+    ChromeDriverManager().install(), chrome_options=chrome_options
+)
 driver.get("https://google.com/maps")
 
 # the WebDriver we will use to wait for elements to load

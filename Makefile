@@ -18,14 +18,14 @@ process_scrapped_data:
 
 ##### RUN PROJECT LOCALLY #####
 run_local_nlp:
-	@uvircorn nlp.fast:app --reload
+	@uvicorn nlp.fast:app --reload
 
 run_local_app:
-	@streamlit streamlit/Alan_reviews_👀.py
+	@streamlit run streamlit/Alan_reviews_👀.py
 
 ##### DEPLOY ON GOOGLE CLOUD #####
 deploy_nlp_api:
-	@infra/deploy_api.sh
+	@sh infra/deploy_api.sh
 
 deploy_streamlit_app:
-	@infra/deploy_app.sh
+	@sh infra/deploy_app.sh
