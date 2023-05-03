@@ -18,6 +18,6 @@ st.markdown(
             Joining Alan as a data full-stack would be the **perfect opportunity** for me to thrive in an ambitious and innovative company
             with a strong tech culture.
 
-            Thank you so much for visiting ! You can reach out to me on **youselouard@gmail.com**.
+            Thank you so much for visiting ! Do not hesitate to reach out to me on **youselouard@gmail.com**.
             """
 )

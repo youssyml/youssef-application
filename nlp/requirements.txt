@@ -4,8 +4,11 @@ pandas
 #NLP
 scikit-learn
 spacy
-sentencepiece
+sentence-transformers
+umap-learn
+hdbscan
+
 
 #API
 fastapi
-uvircorn
+uvicorn

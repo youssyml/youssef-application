@@ -1,10 +1,13 @@
 import streamlit as st
 import datetime
 import requests
+import os
 import pandas as pd
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
+
+API_URL = os.getenv("API_URL")
 
 PALETTE = [
     "rgb(93,88,244)",
@@ -33,7 +36,7 @@ end = end_col.date_input("To", datetime.date(2023, 5, 1))
 
 # get reviews
 response = requests.get(
-    url="http://localhost:8000/reviews",
+    url=f"{API_URL}/reviews",
     params={"start": start.strftime("%Y-%m-%d"), "end": end.strftime("%Y-%m-%d")},
 ).json()
 
@@ -87,12 +90,12 @@ st.plotly_chart(fig1)
 st.markdown(
     """
     ### Strength and weaknesses 🚀
-    Reviews are split into 2 groups : 1-2 star ratings (😢) and 4-5 star ratings (💪🏻). \n
-    The most representative topics are then extracted from each group.
+    *Reviews are split into 2 groups : 1-2 star ratings (😢) and 4-5 star ratings (💪🏻).
+    The most representative topics are then extracted from each group.*
     """
 )
 response = requests.get(
-    url="http://localhost:8000/reviews/sw",
+    url=f"{API_URL}/reviews/sw",
     params={"start": start.strftime("%Y-%m-%d"), "end": end.strftime("%Y-%m-%d")},
 ).json()
 
@@ -107,14 +110,13 @@ improvements_col.markdown("\n".join([f"- **{s}**" for s in response.get(("0"))])
 st.markdown(
     """
     ### Review clustering 👀
-    Reviews are organised in clusters using their content. Reviews in gray are outliers.
-    You can hover over the dots to read the review.
-    The main topics of each cluster are shown below.
+    *Reviews are clustered using their content. Reviews in gray are outliers.
+    Hover over the dots to read the review text. The main topics of each cluster are shown below.*
     """
 )
 
 response = requests.get(
-    url="http://localhost:8000/reviews/clusters",
+    url=f"{API_URL}/reviews/clusters",
     params={"start": start.strftime("%Y-%m-%d"), "end": end.strftime("%Y-%m-%d")},
 ).json()
 
