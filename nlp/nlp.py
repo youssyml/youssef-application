@@ -24,6 +24,9 @@ class NLP:
         self.preprocess_text()
 
     def preprocess_text(self) -> None:
+        """
+        Applies all preprocessing steps to the reviews
+        """
         self.documents = self.reviews_df.copy()
 
         self.documents = self.documents.loc[
@@ -41,7 +44,15 @@ class NLP:
         # droping an outlier review that screws the clustering
         self.documents = self.documents.drop(index=191)
 
-    def get_reviews(self, start: datetime, end: datetime):
+    def get_reviews(self, start: datetime, end: datetime) -> dict:
+        """
+        Method to return a dict with all reviews between to datetimes
+        Args
+            start: start datetime for analysis
+            end: end datetime for analysis
+        Returns
+            dict with all review data
+        """
         return (
             self.reviews_df.loc[
                 (self.reviews_df.date >= start) & (self.reviews_df.date <= end),
@@ -52,6 +63,16 @@ class NLP:
         )
 
     def get_strength_weaknesses(self, start: datetime, end: datetime) -> dict:
+        """
+        Method to return a dict strength and weaknesses computed on reviews
+        between two dates.
+        Clustering of reviews is done manually splitting 1-2 stars and 4-5 stars
+        Args
+            start: start datetime for analysis
+            end: end datetime for analysis
+        Returns
+            dict with top 3 ngrams for each cluster
+        """
         docs_df = self.documents.copy()
 
         # filter for reviews between start and end
@@ -76,7 +97,17 @@ class NLP:
 
         return extract_top_n_words_per_topic(tf_idf, count, docs_by_cluster)
 
-    def get_clusters(self, start: datetime, end: datetime):
+    def get_clusters(self, start: datetime, end: datetime) -> dict:
+        """
+        Method to return a dict with top ngrams for each cluster.
+        Clustering of reviews is using SBERT embedding, UMAP dim reduction
+        and HDBSCAN clustering.
+        Args
+            start: start datetime for analysis
+            end: end datetime for analysis
+        Returns
+            dict with top 3 ngrams for each cluster
+        """
         docs_df = self.documents.copy()
 
         # filter for reviews between start and end
